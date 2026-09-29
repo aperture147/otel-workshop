@@ -1,3 +1,17 @@
+apiVersion: tempo.grafana.com/v1alpha1
+kind: TempoMonolithic
+metadata:
+  name: tempo
+spec:
+  storage:
+    traces:
+      backend: memory
+      size: 2Gi
+  jaegerui:
+    enabled: true
+    route:
+      enabled: true
+---
 apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
