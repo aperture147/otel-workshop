@@ -1,7 +1,22 @@
-= Quarkus Workshop Guide Source Code
+= Demo for OpenTelemetry
 
-This is the source code for the https://github.com/RedHatWorkshops/quarkus-workshop[Quarkus Workshop].
+This is a fork of the Quarkus Workshop as a demo for OpenTelemetry. Instead of spinning up a costly demo cluster, this could be run on a blank yet cheap cluster from the demo platform.
 
-This workshop focuses on https://quarkus.io[Quarkus], supersonic, subatomic container-native Java. The workshop uses https://eclipse.org/che[Eclipse Che] to develop Quarkus apps and deploy them to a Kubernetes cluster (based on OpenShift), and covers several other developer topics.
+To make this works:
 
-Red Hat OpenShift version: 4.19
+- Order a OpenShift Container Platform Cluster (Multi-Cloud) (single node is enough)
+- Install these operators:
+  * Red Hat OpenShift Dev Spaces
+  * Red Hat build of OpenTelemetry
+  * Tempo Operator
+- Create a CheCluster in the Red Hat OpenShift Dev Spaces operator UI (keep everything default)
+- Create a new DevSpace using this repository, wait a bit until the VSCode UI pop up
+- In the UI, apply this manifest file `src/main/kubernetes/otel.yml` to create all otel components (Tempo and Otel collector)
+- In the Ecosystem/Software Catalog of openshift ui, create a postgresql instance from `PostgreSQL (Ephemeral)` template
+  * Install it in the admin-devspaces namespace
+  * Keep everything default and fill these fields:
+    * PostgreSQL Connection Username: `sa`
+    * PostgreSQL Connection Password: `sa`
+- Back to the vscode ui, run `mvn clean package -DskipTests` to deploy the app
+
+After the app deployed, visit the jaeger ui to view the traces. Don't forget to visit the app first (at /datatable.html) to click some page first to create new traces.
